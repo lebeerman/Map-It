@@ -2,12 +2,40 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/main.css">
-    <title></title>
+    <link rel="stylesheet" href="/styles/reset.css">
+    <link rel="stylesheet" href="/styles/main.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+  integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+  crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+   integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+   crossorigin=""></script>
+
+
+    <title>Where's Stuff?!</title>
   </head>
   <body>
-    <h1>Boy oh boy, this app is comin along!</h1>
+    <header>
+      <div class="logo">
+        WHERE'S STUFF?!
+      </div>
+      <div class="slug">
+        the app that helps you keep track of shit
+      </div>
+      <nav>
+        <ul>
+          <li><a href="adout.html">Home</a></li>
+          <li><a href="adout.html">About</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h1>Track all the things!</h1>
+      <p>This map is showings where things are. Add things. Notes. People's Last Known Location. Where you left your keys. Whatever!</p>
+      <div id="mapid"></div>
+    </main>
+    <footer></footer>
     <script type="text/javascript" src="scripts/app.js"></script>
   </body>
 </html>
