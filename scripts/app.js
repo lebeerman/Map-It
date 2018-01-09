@@ -1,20 +1,31 @@
 const url = "https://p2-webapp-server.herokuapp.com/";
 const testUrl = "http://localhost:3000/";
-let mapItemForm = document.querySelector('#newMapItem');
+
+//Creates a new map item on submit - posts to server.
+let mapItemSubmit = document.querySelector("#newMapItem");
+mapItemSubmit.addEventListener("click", event => {
+  event.preventDefault();
+  postMapItem();
+});
 
 // initiates map instance on element with id = mapid.
-let mymap = L.map('mapid', {
-  center: [39.7563276,-105.0070511],
+let mymap = L.map("mapid", {
+  center: [39.7563276, -105.0070511],
   zoom: 15
 });
 
 // snippet required to use leaflet
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-  maxZoom: 18,
-  id: 'mapbox.streets',
-  accessToken: 'pk.eyJ1IjoibGViZWVybWFuIiwiYSI6ImNqYmd1bnUxZzNjZG0ycmxscHozaDFja3MifQ.3RRZRD3bBsMfgNdW5-J8cQ'
-}).addTo(mymap);
+L.tileLayer(
+  "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
+  {
+    attribution:
+      'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 16,
+    id: "mapbox.streets",
+    accessToken:
+      "pk.eyJ1IjoibGViZWVybWFuIiwiYSI6ImNqYmd1bnUxZzNjZG0ycmxscHozaDFja3MifQ.3RRZRD3bBsMfgNdW5-J8cQ"
+  }
+).addTo(mymap);
 
 // adds click listener on map to show lat long
 function onMapClick(e) {
@@ -24,36 +35,35 @@ function onMapClick(e) {
     .openOn(mymap);
 }
 var popup = L.popup();
-mymap.on('click', onMapClick);
+mymap.on("click", onMapClick);
 
 //functions that get data1 and data2 and puts them into the map.
 function getServerData() {
   fetch(testUrl)
-  .then(response => response.json())
-  .then(response => {
-    console.log('Got the goods.');
-    let mapData = combineData(response);
-    populateMap(mapData);
-  });
+    .then(response => response.json())
+    .then(response => {
+      console.log("Got the goods.");
+      let mapData = combineData(response);
+      populateMap(mapData);
+    })
+    .catch(error => console.error("Fetching Error: ", error));
 }
 
 //gets server data and combines it.
 function combineData(data) {
   let allTheData = [];
-  console.log('Combining Data!');
-  for (var infoItem of data.toolTip){
+  console.log("Combining Data!");
+  for (var infoItem of data.toolTip) {
     for (var mapItem of data.markerInfo) {
       // console.dir(mapItem);
       // console.dir(infoItem);
       if (infoItem.id == mapItem.id) {
         // console.log(JSON.stringify(infoItem)+" !!! "+JSON.stringify(mapItem));
         allTheData.push(Object.assign(mapItem, infoItem));
-      } else if (Object.hasOwnProperty()) {
-
       }
     }
   }
-  console.log('Data Processing Complete: '+JSON.stringify(allTheData));
+  console.log("Data Processing Complete: " + JSON.stringify(allTheData));
   return allTheData;
 }
 //takes the combined server data and adds them to the Leaflet map.
@@ -81,12 +91,12 @@ function populateMap(formatedData) {
   // creates popups on click!
   X.bindPopup("<b>My Brothers Bar!</b><br>A gSchool grad owns this place. Pretty affordable burgers, too.");
   */
-  formatedData.forEach(item =>{
+  formatedData.forEach(item => {
     switch (item.markerType) {
-      case 'marker':
+      case "marker":
         createMarker(item);
         break;
-      case 'circle':
+      case "circle":
         createCircle(item);
         break;
       default:
@@ -94,58 +104,55 @@ function populateMap(formatedData) {
     }
   });
 }
+
 //adds items to the map!!!
 function createMarker(mapItem) {
-  console.log('Making Markers!');
+  console.log("Making Markers!");
+  console.log(mapItem.latLong);
   var marker = L.marker(mapItem.latLong).addTo(mymap);
   marker.bindPopup(`${mapItem.locationTitle}<br>${mapItem.locationNote}`);
 }
 function createCircle(mapItem) {
-  console.log('Making Circles!');
+  console.log("Making Circles!");
   var circle = L.circle(mapItem.latLong, {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 0.5,
-      radius: 100
+    color: "red",
+    fillColor: "#f03",
+    fillOpacity: 0.5,
+    radius: 100
   }).addTo(mymap);
   circle.bindPopup(`${mapItem.locationTitle}<br>${mapItem.locationNote}`);
 }
-
-//Creates a new map item on submit - posts to server.
-mapItemForm.addEventListener('click', (event)=>{
-  event.preventDefault();
-  postMapItem();
-});
-
 //On click of Submit button - functions that take the formData and sends them to data1 and data2 on submit. updates the map with the new user-provided data!!!
 function postMapItem() {
-  var newMapItem = new FormData(document.querySelector('#newMapItem'));
-  fetch(testUrl, {
+  const newMapItem = new FormData(document.querySelector("#create-location"));
+  const postData = {
     method: "POST",
-    headers: new Headers({
-      "Content-Type": "application/json"
-    }),
     body: JSON.stringify({
-      locationTitle: formData.get("location-title"),
-      locationNote: formData.get("location-note"),
-      latLong: formData.get("location"),
-      markerType: "marker"
-    })
-  })
+      data: {
+        locationTitle: newMapItem.get("location-title"),
+        locationNote: newMapItem.get("location-note"),
+        latLong: newMapItem.get("location"),
+        markerType: "marker"
+      }
+    }),
+    headers: new Headers({ "Content-Type": "application/json" })
+  };
+  console.dir(postData);
+  fetch(testUrl, postData)
     .then(resp => resp.json())
     .then(resp => {
-      console.log('posting!');
-      showSuccess(resp.message);
-      setTimeout(() => (removeMsg()),4000);
+      console.log("posting!");
+      // showSuccess(resp.message);
+      // setTimeout(() => (removeMsg()),4000);
       getServerData();
     })
-    .catch(console.error);
+    .catch(error => console.error("Posting Error: ", error, postData));
 }
 function showSuccess(resMessage) {
-  document.querySelector('.save-message').innerHTML = resMessage;
+  document.querySelector(".save-message").innerHTML = resMessage;
 }
 function removeMsg() {
-  document.querySelector('.save-message').innerHTML = '';
+  document.querySelector(".save-message").innerHTML = "";
 }
 // create popup layers!
 // var popup = L.popup()
