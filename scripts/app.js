@@ -1,5 +1,4 @@
 const url = "https://p2-webapp-server.herokuapp.com/";
-const testUrl = "http://localhost:3000/";
 
 //Creates a new map item on submit - posts to server.
 let mapItemSubmit = document.querySelector("#newMapItem");
@@ -8,12 +7,27 @@ mapItemSubmit.addEventListener("click", event => {
   postMapItem();
 });
 
-// initiates map instance on element with id = mapid.
+// initiates map instance on element with id = mapid. Requires Leaflet.sleep for mouseover events!!!
 let mymap = L.map("mapid", {
-  center: [39.7563276, -105.0070511],
-  zoom: 15
+  center: [39.74342, -105.07785],
+  zoom: 12,
+  // false if you want an unruly map
+  sleep: true,
+  // time(ms) until map sleeps on mouseout
+  sleepTime: 750,
+  // time(ms) until map wakes on mouseover
+  wakeTime: 750,
+  // should the user receive wake instructions?
+  sleepNote: true,
+  // should hovering wake the map? (non-touch devices only)
+  hoverToWake: true,
+  // a message to inform users about waking the map
+  wakeMessage: "Click or Hover to Wake",
+  // a constructor for a control button
+  sleepButton: L.Control.sleepMapControl,
+  // opacity for the sleeping map
+  sleepOpacity: 0.6
 });
-
 // snippet required to use leaflet
 L.tileLayer(
   "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
@@ -39,7 +53,7 @@ mymap.on("click", onMapClick);
 
 //functions that get data1 and data2 and puts them into the map.
 function getServerData() {
-  fetch(testUrl)
+  fetch(url)
     .then(response => response.json())
     .then(response => {
       console.log("Got the goods.");
@@ -68,29 +82,6 @@ function combineData(data) {
 }
 //takes the combined server data and adds them to the Leaflet map.
 function populateMap(formatedData) {
-  //NOTES
-  /* adds a marker
-  var marker = L.marker([39.75616, -105.00913]).addTo(mymap);
-
-  // adds a circle!
-  var circle = L.circle([39.7563276,-105.0070511], {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 0.5,
-      radius: 100
-  }).addTo(mymap);
-
-  // adds a polygon!
-  var polygon = L.polygon([
-      [39.75851, -105.01584],
-      [39.762, -105.01582],
-      [39.76189, -105.01164],
-      [39.75879, -105.01215]
-  ]).addTo(mymap);
-
-  // creates popups on click!
-  X.bindPopup("<b>My Brothers Bar!</b><br>A gSchool grad owns this place. Pretty affordable burgers, too.");
-  */
   formatedData.forEach(item => {
     switch (item.markerType) {
       case "marker":
@@ -106,6 +97,8 @@ function populateMap(formatedData) {
 }
 
 //adds items to the map!!!
+// opacity 	Number 	0.9 	Tooltip container opacity.
+// className 	String 	'' 	A custom CSS class name to assign to the popup.
 function createMarker(mapItem) {
   console.log("Making Markers!");
   console.log(mapItem.latLong);
@@ -138,12 +131,11 @@ function postMapItem() {
     headers: new Headers({ "Content-Type": "application/json" })
   };
   console.dir(postData);
-  fetch(testUrl, postData)
+  fetch(url, postData)
     .then(resp => resp.json())
     .then(resp => {
-      console.log("posting!");
-      // showSuccess(resp.message);
-      // setTimeout(() => (removeMsg()),4000);
+      showSuccess(resp.message);
+      setTimeout(() => (removeMsg()),4000);
       getServerData();
     })
     .catch(error => console.error("Posting Error: ", error, postData));

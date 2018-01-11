@@ -1,17 +1,10 @@
 body {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 }
-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  width: 100vw;
-  height: 60px;
-}
+
 #mapid {
   height: 70vh;
-  width: 80vw;
+  width: 100%;
 }
