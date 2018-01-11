@@ -1,12 +1,5 @@
 const url = "https://p2-webapp-server.herokuapp.com/";
 
-//Creates a new map item on submit - posts to server.
-let mapItemSubmit = document.querySelector("#newMapItem");
-mapItemSubmit.addEventListener("click", event => {
-  event.preventDefault();
-  postMapItem();
-});
-
 // initiates map instance on element with id = mapid. Requires Leaflet.sleep for mouseover events!!!
 let mymap = L.map("mapid", {
   center: [39.74342, -105.07785],
@@ -14,9 +7,9 @@ let mymap = L.map("mapid", {
   // false if you want an unruly map
   sleep: true,
   // time(ms) until map sleeps on mouseout
-  sleepTime: 750,
+  sleepTime: 2000,
   // time(ms) until map wakes on mouseover
-  wakeTime: 750,
+  wakeTime: 2000,
   // should the user receive wake instructions?
   sleepNote: true,
   // should hovering wake the map? (non-touch devices only)
@@ -26,14 +19,12 @@ let mymap = L.map("mapid", {
   // a constructor for a control button
   sleepButton: L.Control.sleepMapControl,
   // opacity for the sleeping map
-  sleepOpacity: 0.6
+  sleepOpacity: 0.5
 });
 // snippet required to use leaflet
 L.tileLayer(
   "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
   {
-    attribution:
-      'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
     maxZoom: 16,
     id: "mapbox.streets",
     accessToken:
@@ -52,8 +43,6 @@ function onMapClick(e) {
   console.log(Object.values(e.latlng).toString(' '));
   document.querySelector("#mapLocation").value = Object.values(e.latlng).toString();
 }
-var popup = L.popup();
-mymap.on("click", onMapClick);
 //functions that get data1 and data2 and puts them into the map.
 function getServerData() {
   fetch(url)
@@ -98,8 +87,6 @@ function populateMap(formatedData) {
   });
 }
 // adds items to the map!!!
-// opacity 	Number 	0.9 	Tooltip container opacity.
-// className 	String 	'' 	A custom CSS class name to assign to the popup.
 function createMarker(mapItem) {
   console.log("Making Markers!");
   console.log(mapItem.latLong);
@@ -116,6 +103,12 @@ function createCircle(mapItem) {
   }).addTo(mymap);
   circle.bindPopup(`${mapItem.locationTitle}<br>${mapItem.locationNote}`);
 }
+//Creates a new map item on submit - posts to server.
+let mapItemSubmit = document.querySelector("#newMapItem");
+mapItemSubmit.addEventListener("click", event => {
+  event.preventDefault();
+  postMapItem();
+});
 //On click of Submit button - functions that take the formData and sends them to data1 and data2 on submit. updates the map with the new user-provided data!!!
 function postMapItem() {
   const newMapItem = new FormData(document.querySelector("#create-location"));
@@ -147,4 +140,10 @@ function showSuccess(resMessage) {
 function removeMsg() {
   document.querySelector(".save-message").innerHTML = "";
 }
+// playing with geolocation
+mymap.locate({ setView: true, maxZoom: 16 });
+mymap.on("locationerror", (e) => alert(e.message));
+
+var popup = L.popup();
 getServerData();
+mymap.on("click", onMapClick);
