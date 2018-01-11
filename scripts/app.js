@@ -1,4 +1,4 @@
-const url = "https://p2-webapp-server.herokuapp.com/";
+const url = 'http://localhost:3000/' //"https://p2-webapp-server.herokuapp.com/";
 
 //Creates a new map item on submit - posts to server.
 let mapItemSubmit = document.querySelector("#newMapItem");
@@ -40,17 +40,20 @@ L.tileLayer(
       "pk.eyJ1IjoibGViZWVybWFuIiwiYSI6ImNqYmd1bnUxZzNjZG0ycmxscHozaDFja3MifQ.3RRZRD3bBsMfgNdW5-J8cQ"
   }
 ).addTo(mymap);
-
 // adds click listener on map to show lat long
 function onMapClick(e) {
   popup
     .setLatLng(e.latlng)
-    .setContent(e.latlng.toString())
+    .setContent('Add your Title and Note now!')
     .openOn(mymap);
+  mymap.addEventListener('mouseout', (e)=> {
+    mymap.closePopup();
+  })
+  console.log(Object.values(e.latlng).toString(' '));
+  document.querySelector("#mapLocation").value = Object.values(e.latlng).toString();
 }
 var popup = L.popup();
 mymap.on("click", onMapClick);
-
 //functions that get data1 and data2 and puts them into the map.
 function getServerData() {
   fetch(url)
@@ -62,7 +65,6 @@ function getServerData() {
     })
     .catch(error => console.error("Fetching Error: ", error));
 }
-
 //gets server data and combines it.
 function combineData(data) {
   let allTheData = [];
@@ -95,8 +97,7 @@ function populateMap(formatedData) {
     }
   });
 }
-
-//adds items to the map!!!
+// adds items to the map!!!
 // opacity 	Number 	0.9 	Tooltip container opacity.
 // className 	String 	'' 	A custom CSS class name to assign to the popup.
 function createMarker(mapItem) {
@@ -146,10 +147,4 @@ function showSuccess(resMessage) {
 function removeMsg() {
   document.querySelector(".save-message").innerHTML = "";
 }
-// create popup layers!
-// var popup = L.popup()
-//     .setLatLng([39.7563276,-105.0070511])
-//     .setContent("I am a standalone popup.")
-//     .openOn(mymap);
-
 getServerData();

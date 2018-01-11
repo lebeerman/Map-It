@@ -1,47 +1,89 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/styles/reset.css">
-    <link rel="stylesheet" href="/styles/main.css">
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
-  integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
-  crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
-   integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
-   crossorigin=""></script>
-
-    <title>MapIt</title>
-  </head>
-  <body>
-    <header>
-      <!--ToDo: Logo, nag, styling -->
-      <div class="logo">
-        MapIt
-      </div>
-      <div class="slug">
-        the app that helps you keep track of shit
-      </div>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
+<head>
+  <meta charset="utf-8">
+  <!-- <link rel="stylesheet" href="/styles/reset.css"> -->
+  <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+    crossorigin=""></script>
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  <title>MapIt</title>
+</head>
+<body>
+  <header>
+    <nav class="green darken-4">
+      <div class="container nav-wrapper green darken-4">
+        <a href="index.html" class="brand-logo center">MapIt</a>
+        <ul id="nav-mobile" class="left">
+          <li>
+            <a href="index.html">Home</a>
+          </li>
+          <li>
+            <a href="about.html">About</a>
+          </li>
         </ul>
-      </nav>
-    </header>
-
-    <main>
-      <!--ToDo: styling, call to action, description -->
-      <h1>Track all the things!</h1>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="container">
+      <h2>
+        Map all the things!
+      </h2>
       <p>
-        Maybe you want to show people where you're at and where to look if you you don't show up at work on Monday. Maybe you want to share with your friends some of the best dive bars. Or maybe you want to show off all states you've visited.
+        This is light weight web app that allows you to collect a map with markers which display notes from locations provided by
+        you, the user...
       </p>
-      <p>This app will save all the locations entered to it with a note attached to it. You share the map with everyone else. Or at leat that's the goal.</p>
-    </main>
-    <footer>
-      <p>Copyright 2018. By <a href="https://www.danbeerman.com">Dan</a>.</p>
-    </footer>
-    <script type="text/javascript" src="scripts/app.js"></script>
-  </body>
+      <p>
+        Next steps? A database(s) that will allow you to save your map. A public map which would let the crowd add their own spots.
+        A custom/random color scheme? An ability to share your map by unique URL or password protected location. Aaaaand integrate
+        Mountain Project, Trail Run Project, AllTrails, Weather, Food, whateva whateva. Provide suggestions if you'd like!
+      </p>
+    </div>
+  </main>
+  <footer class="page-footer card green darken-4">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Suggestions?</h5>
+          <p class="grey-text text-lighten-4">Submit them here:
+            <div class="input-field inline">
+              <input id="comments" type="text" class="validate">
+              <label for="comments"></label>
+            </div>
+          </p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Links</h5>
+          <ul>
+            <li>
+              <a class="grey-text text-lighten-3" href="http://www.danbeerman.com">Dan's Website</a>
+            </li>
+            <li>
+              <a class="grey-text text-lighten-3" href="http://leafletjs.com/reference-1.2.0.html">Leaflet Info</a>
+            </li>
+            <li>
+              <a class="grey-text text-lighten-3" href="https://www.mapbox.com/">Mapbox Info</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        <p>©2018 Copyright. By
+          <a href="http://www.danbeerman.com">Dan</a>.</p>
+        <a class="grey-text text-lighten-4 right" href="#!">Thanks for stopping by!</a>
+      </div>
+    </div>
+  </footer>
+  <script tpye="text/javascript" src="scripts/Leaflet.Sleep.js"></script>
+  <script type="text/javascript" src="scripts/app.js"></script>
+</body>
+
 </html>

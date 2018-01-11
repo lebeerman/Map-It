@@ -1,9 +1,11 @@
 body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
 }
-
+main {
+  min-height: 50vh;
+}
 #mapid {
   height: 70vh;
   width: 100%;

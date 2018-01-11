@@ -2,7 +2,6 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <!-- <link rel="stylesheet" href="/styles/reset.css"> -->
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
   integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
@@ -18,15 +17,15 @@
   </head>
   <body>
     <header>
-      <nav>
-        <div class="nav-wrapper green darken-4">
+      <nav class="green darken-4">
+        <div class="container nav-wrapper">
           <a href="#" class="brand-logo center">MapIt</a>
           <ul id="nav-mobile" class="left">
             <li>
-              <a href="Home.html">Home</a>
+              <a href="index.html">Home</a>
             </li>
             <li>
-              <a href="About.html">About</a>
+              <a href="about.html">About</a>
             </li>
           </ul>
         </div>
@@ -58,7 +57,7 @@
               </div>
               <div>
                 <label for="location-latlong">Enter Lat/Long</label>
-                <input type="text" name="location" placeholder="Latitude, Longitude (note the comma to separate the numbers!)">
+                <input id="mapLocation" type="text" name="location" placeholder="Latitude, Longitude (note the comma to separate the numbers!)">
               </div>
             </form>
             <button id="newMapItem" class="waves-effect waves-light btn-large center" type="submit" name="button">Enter Location!</button>
@@ -72,8 +71,13 @@
       <div class="container">
         <div class="row">
           <div class="col l6 s12">
-            <h5 class="white-text">Footer Content</h5>
-            <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+            <h5 class="white-text">Suggestions?</h5>
+            <p class="grey-text text-lighten-4">Submit them here: 
+              <div class="input-field inline">
+                <input id="email" type="email" class="validate">
+                <label for="email" data-error="wrong" data-success="right" placeholder="Suggestions?"></label>
+              </div>
+            </p>
           </div>
           <div class="col l4 offset-l2 s12">
             <h5 class="white-text">Links</h5>
