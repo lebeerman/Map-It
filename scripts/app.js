@@ -1,4 +1,4 @@
-const url = 'http://localhost:3000/' //"https://p2-webapp-server.herokuapp.com/";
+const url = "https://p2-webapp-server.herokuapp.com/";
 
 //Creates a new map item on submit - posts to server.
 let mapItemSubmit = document.querySelector("#newMapItem");
