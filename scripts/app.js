@@ -1,5 +1,4 @@
 const url = "https://p2-webapp-server.herokuapp.com/";
-
 // initiates map instance on element with id = mapid. Requires Leaflet.sleep for mouseover events!!!
 let mymap = L.map("mapid", {
   center: [39.74342, -105.07785],
@@ -40,7 +39,6 @@ function onMapClick(e) {
   mymap.addEventListener('mouseout', (e)=> {
     mymap.closePopup();
   })
-  console.log(Object.values(e.latlng).toString(' '));
   document.querySelector("#mapLocation").value = Object.values(e.latlng).toString();
 }
 //functions that get data1 and data2 and puts them into the map.
@@ -48,27 +46,21 @@ function getServerData() {
   fetch(url)
     .then(response => response.json())
     .then(response => {
-      console.log("Got the goods.");
       let mapData = combineData(response);
       populateMap(mapData);
     })
     .catch(error => console.error("Fetching Error: ", error));
 }
-//gets server data and combines it.
+// gets server data and combines it.
 function combineData(data) {
   let allTheData = [];
-  console.log("Combining Data!");
   for (var infoItem of data.toolTip) {
     for (var mapItem of data.markerInfo) {
-      // console.dir(mapItem);
-      // console.dir(infoItem);
       if (infoItem.id == mapItem.id) {
-        // console.log(JSON.stringify(infoItem)+" !!! "+JSON.stringify(mapItem));
         allTheData.push(Object.assign(mapItem, infoItem));
       }
     }
   }
-  console.log("Data Processing Complete: " + JSON.stringify(allTheData));
   return allTheData;
 }
 //takes the combined server data and adds them to the Leaflet map.
@@ -88,13 +80,10 @@ function populateMap(formatedData) {
 }
 // adds items to the map!!!
 function createMarker(mapItem) {
-  console.log("Making Markers!");
-  console.log(mapItem.latLong);
   var marker = L.marker(mapItem.latLong).addTo(mymap);
   marker.bindPopup(`${mapItem.locationTitle}<br>${mapItem.locationNote}`);
 }
 function createCircle(mapItem) {
-  console.log("Making Circles!");
   var circle = L.circle(mapItem.latLong, {
     color: "red",
     fillColor: "#f03",
@@ -124,7 +113,6 @@ function postMapItem() {
     }),
     headers: new Headers({ "Content-Type": "application/json" })
   };
-  console.dir(postData);
   fetch(url, postData)
     .then(resp => resp.json())
     .then(resp => {
@@ -143,7 +131,6 @@ function removeMsg() {
 // playing with geolocation
 mymap.locate({ setView: true, maxZoom: 16 });
 mymap.on("locationerror", (e) => alert(e.message));
-
 var popup = L.popup();
 getServerData();
 mymap.on("click", onMapClick);
