@@ -1,5 +1,6 @@
 {
   "projects": {
-    "dev-app": "p2-web-app"
+    "dev-app": "p2-web-app",
+    "default": "map-it-team"
   }
 }
